@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Threading;
 using SC2APIProtocol;
@@ -278,7 +279,7 @@ namespace Bot
             requestQuery.Query = new RequestQuery();
             requestQuery.Query.Placements.Add(queryBuildingPlacement);
 
-            var result = Program.gc.SendQuery(requestQuery.Query);
+            var result = Program.gameConnection.SendQuery(requestQuery.Query);
             if (result.Result.Placements.Count > 0)
                 return (result.Result.Placements[0].Result == ActionResult.Success);
             return false;
@@ -288,14 +289,9 @@ namespace Bot
         public static void DistributeWorkers()
         {
             var workers = GetUnits(Units.Workers);
-            List<Unit> idleWorkers = new List<Unit>();
-            foreach (var worker in workers)
-            {
-                if (worker.order.AbilityId != 0) continue;
-                idleWorkers.Add(worker);
-            }
+            var idleWorkers = workers.Where(w => w.order.AbilityId == 0).ToList();
 
-            if (idleWorkers.Count > 0)
+            if (idleWorkers.Any())
             {
                 var resourceCenters = GetUnits(Units.ResourceCenters, onlyCompleted: true);
                 var mineralFields = GetUnits(Units.MineralFields, onlyVisible: true, alliance: Alliance.Neutral);
@@ -304,15 +300,13 @@ namespace Bot
                 {
                     //get one of the closer mineral fields
                     var mf = GetFirstInRange(rc.position, mineralFields, 7);
-                    if (mf == null) continue;
-
-                    //only one at a time
-                    Logger.Info("Distributing idle worker: {0}", idleWorkers[0].tag);
-                    idleWorkers[0].Smart(mf);
-                    return;
+                    if (mf != null)
+                    {
+                        //only one at a time
+                        Logger.Info("Distributing idle worker: {0}", idleWorkers[0].tag);
+                        idleWorkers.ForEach(w => w.Smart(mf));
+                    }
                 }
-                //nothing to be done
-                return;
             }
             else
             {
@@ -378,6 +372,22 @@ namespace Bot
                 if (Vector3.DistanceSquared(targetPosition, unit.position) <= maxDistanceSqr)
                     return unit;
             }
+            return null;
+        }
+
+        public static Unit GetNearest(Unit targetUnit, List<Unit> units, float maxDistance = 0)
+        {
+            var maxDistanceSqr = maxDistance * maxDistance;
+
+            var targetPostion = targetUnit.position;
+
+            var nearestUnit = units.MinBy(u => Vector3.DistanceSquared(targetPostion, u.position));
+
+            if (maxDistance <= 0 || nearestUnit.Item1 <= maxDistance)
+            {
+                return nearestUnit.Item2;
+            }
+
             return null;
         }
 

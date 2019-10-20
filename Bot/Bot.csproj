@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Abilities.cs" />
     <Compile Include="Controller.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Protocol\Common.cs" />
