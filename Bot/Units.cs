@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace Bot {
-    internal static class Units {
+namespace Bot
+{
+    internal static class Units
+    {
         public static uint COLOSSUS = 4;
         public static uint TECHLAB = 5;
         public static uint REACTOR = 6;
@@ -786,7 +788,7 @@ namespace Bot {
             STARPORT_TECHLAB,
             STARPORT_REACTOR
         };
-        
+
         public static readonly HashSet<uint> SupplyDepots = new HashSet<uint> {
             SUPPLY_DEPOT,
             SUPPLY_DEPOT_LOWERED
