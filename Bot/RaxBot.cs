@@ -34,8 +34,7 @@ namespace Bot
             var resourceCenters = Controller.GetUnits(Units.ResourceCenters);
             foreach (var rc in resourceCenters)
             {
-                if (Controller.CanConstruct(Units.SCV))
-                    rc.Train(Units.SCV);
+                if (rc.assignedWorkers < rc.idealWorkers && Controller.CanConstruct(Units.SCV)) rc.Train(Units.SCV);
             }
 
 
