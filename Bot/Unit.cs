@@ -100,8 +100,5 @@ namespace Bot
             action.ActionRaw.UnitCommand.UnitTags.Add(tag);
             Controller.AddAction(action);
         }
-
-
-
     }
 }

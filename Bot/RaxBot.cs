@@ -5,9 +5,8 @@ namespace Bot
 {
     internal class RaxBot : Bot
     {
-
-        //the following will be called every frame
-        //you can increase the amount of frames that get processed for each step at once in Wrapper/GameConnection.cs: stepSize  
+        // The following will be called every frame
+        // You can increase the amount of frames that get processed for each step at once in Wrapper/GameConnection.cs: stepSize  
         public IEnumerable<Action> OnFrame()
         {
             Controller.OpenFrame();
@@ -50,8 +49,6 @@ namespace Bot
             //distribute workers optimally every 10 frames
             if (Controller.frame % 10 == 0)
                 Controller.DistributeWorkers();
-
-
 
             //build up to 4 barracks at once
             if (Controller.CanConstruct(Units.BARRACKS))

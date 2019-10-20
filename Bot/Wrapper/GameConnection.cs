@@ -98,6 +98,7 @@ namespace Bot
         {
             var myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var executeInfo = Path.Combine(myDocuments, "StarCraft II", "ExecuteInfo.txt");
+
             if (!File.Exists(executeInfo))
                 executeInfo = Path.Combine(myDocuments, "StarCraftII", "ExecuteInfo.txt");
 

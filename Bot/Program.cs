@@ -14,22 +14,25 @@ namespace Bot
         private static readonly string mapName = Path.Combine("Ladder2019Season3", "AcropolisLE.SC2Map");
 
         private static readonly Race opponentRace = Race.Random;
-        private static readonly Difficulty opponentDifficulty = Difficulty.Easy;
+        private static readonly Difficulty opponentDifficulty = Difficulty.VeryHard;
 
-        public static GameConnection gc;
+        public static GameConnection gameConnection;
 
         private static void Main(string[] args)
         {
             try
             {
-                gc = new GameConnection();
+                gameConnection = new GameConnection();
+
                 if (args.Length == 0)
                 {
-                    gc.readSettings();
-                    gc.RunSinglePlayer(bot, mapName, race, opponentRace, opponentDifficulty).Wait();
+                    gameConnection.readSettings();
+                    gameConnection.RunSinglePlayer(bot, mapName, race, opponentRace, opponentDifficulty).Wait();
                 }
                 else
-                    gc.RunLadder(bot, race, args).Wait();
+                {
+                    gameConnection.RunLadder(bot, race, args).Wait();
+                }
             }
             catch (Exception ex)
             {
